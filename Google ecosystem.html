@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Command Center</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #3c4043;
+            --accent-blue: #1a73e8;
+            --search-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            --card-bg: rgba(30, 31, 34, 0.9);
+            --text-color: #e8eaed;
+            --accent-blue: #8ab4f8;
+            --search-bg: #303134;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #clock {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .google-logo-top {
+            width: 100px;
+            height: auto;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 650px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .search-form {
+            display: flex;
+            background: var(--search-bg);
+            padding: 12px 25px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px var(--shadow);
+            align-items: center;
+            border: 1px solid rgba(128,128,128,0.2);
+        }
+
+        .search-form input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            background: transparent;
+            color: var(--text-color);
+        }
+
+        .search-options {
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px 10px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            background: var(--search-bg);
+            box-shadow: 0 8px 16px var(--shadow);
+            border-color: var(--accent-blue);
+        }
+
+        .app-icon {
+            width: 44px;
+            height: 44px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        .app-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .theme-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <div id="clock">00:00:00</div>
+            <button class="theme-btn" onclick="toggleTheme()">🌓 Theme</button>
+        </div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="google-logo-top">
+    </div>
+
+    <div class="search-container">
+        <form id="searchForm" class="search-form" action="https://www.google.com/search" method="GET" target="_blank">
+            <input type="text" name="q" id="searchInput" placeholder="Search Google..." autocomplete="off">
+        </form>
+        <div class="search-options">
+            <label><input type="radio" name="engine" value="google" checked onclick="updateSearch('google')"> Google</label>
+            <label style="margin-left: 15px;"><input type="radio" name="engine" value="youtube" onclick="updateSearch('youtube')"> YouTube</label>
+        </div>
+    </div>
+
+    <div class="hub-grid">
+        <a href="https://gemini.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg">
+            <span class="app-name">Gemini</span>
+        </a>
+        <a href="https://mail.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg">
+            <span class="app-name">Gmail</span>
+        </a>
+        <a href="https://drive.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg">
+            <span class="app-name">Drive</span>
+        </a>
+        <a href="https://calendar.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg">
+            <span class="app-name">Calendar</span>
+        </a>
+        <a href="https://youtube.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg">
+            <span class="app-name">YouTube</span>
+        </a>
+
+        <a href="https://docs.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg">
+            <span class="app-name">Docs</span>
+        </a>
+        <a href="https://sheets.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/3/30/Google_Sheets_logo_%282014-2020%29.svg">
+            <span class="app-name">Sheets</span>
+        </a>
+        <a href="https://forms.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://www.gstatic.com/images/branding/product/2x/forms_96dp.png">
+            <span class="app-name">Forms</span>
+        </a>
+        <a href="https://sites.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://www.gstatic.com/images/branding/product/2x/sites_96dp.png">
+            <span class="app-name">Sites</span>
+        </a>
+        <a href="https://keep.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://www.gstatic.com/images/branding/product/2x/keep_96dp.png">
+            <span class="app-name">Keep</span>
+        </a>
+
+        <a href="https://classroom.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://www.gstatic.com/images/branding/product/2x/classroom_96dp.png">
+            <span class="app-name">Classroom</span>
+        </a>
+        <a href="https://photos.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://www.gstatic.com/images/branding/product/2x/photos_96dp.png">
+            <span class="app-name">Photos</span>
+        </a>
+        <a href="https://maps.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg">
+            <span class="app-name">Maps</span>
+        </a>
+
+        <a href="https://passwords.google.com/" class="app-card" target="_blank">
+            <svg class="app-icon" viewBox="0 0 48 48">
+                <circle cx="16" cy="24" r="10" fill="#4285F4"/>
+                <circle cx="16" cy="24" r="4" fill="#FFFFFF"/>
+                <rect x="22" y="20" width="20" height="8" rx="2" fill="#FBBC05"/>
+                <rect x="28" y="20" width="4" height="8" fill="#EA4335"/>
+                <rect x="36" y="24" width="6" height="10" rx="1" fill="#34A853"/>
+            </svg>
+            <span class="app-name">Passwords</span>
+        </a>
+
+        <a href="https://translate.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Google_Translate_logo.svg">
+            <span class="app-name">Translate</span>
+        </a>
+
+        <a href="https://news.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/d/da/Google_News_icon.svg">
+            <span class="app-name">News</span>
+        </a>
+        <a href="https://play.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Play_Arrow_logo.svg">
+            <span class="app-name">Play Store</span>
+        </a>
+        <a href="https://contacts.google.com/" class="app-card" target="_blank">
+            <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/9/93/Google_Contacts_icon.svg">
+            <span class="app-name">Contacts</span>
+        </a>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function toggleTheme() {
+            const body = document.body;
+            body.hasAttribute('data-theme') ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+        }
+
+        function updateSearch(engine) {
+            const form = document.getElementById('searchForm');
+            const input = document.getElementById('searchInput');
+            if (engine === 'youtube') {
+                form.action = "https://www.youtube.com/results";
+                input.name = "search_query";
+                input.placeholder = "Search YouTube...";
+            } else {
+                form.action = "https://www.google.com/search";
+                input.name = "q";
+                input.placeholder = "Search Google...";
+            }
+        }
+    </script>
+</body>
+</html>
